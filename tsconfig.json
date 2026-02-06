@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/bun/tsconfig.json",
+  "compilerOptions": {
+    "verbatimModuleSyntax": true,
+    "paths": {
+      "@command/*": ["./src/command/*"],
+      "@compiler/*": ["./src/compiler/*"],
+      "@resolver/*": ["./src/resolver/*"]
+    }
+  }
+}
