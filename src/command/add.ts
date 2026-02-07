@@ -6,8 +6,7 @@ export const add = define({
   args: {
     identifier: {
       type: 'positional',
-      short: 'id',
-      required: true
+      description: 'The identifier of the dependency'
     },
     compile: {
       type: 'boolean',

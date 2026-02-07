@@ -1,7 +1,7 @@
-import { cli, define } from 'gunshi'
-import { renderUsage } from 'gunshi/renderer'
 import { add } from '@command/add.ts'
 import { init } from '@command/init.ts'
+import { cli, define } from 'gunshi'
+import { renderUsage } from 'gunshi/renderer'
 
 const duke = define({
   run: async (ctx) => {
