@@ -1,3 +1,4 @@
+import { Dependency } from '@resolver/dependency.ts'
 import { define } from 'gunshi'
 
 export const add = define({
@@ -8,12 +9,6 @@ export const add = define({
       type: 'positional',
       description: 'The identifier of the dependency'
     },
-    compile: {
-      type: 'boolean',
-      short: 'c',
-      description: 'Add as compile dependency (default)',
-      default: false
-    },
     test: {
       type: 'boolean',
       short: 't',
@@ -22,6 +17,8 @@ export const add = define({
     }
   },
   run: async (ctx) => {
-    console.log('Adding a new dependency')
+    const { identifier, compile, test } = ctx.values
+    const dep = Dependency.from(identifier)
+    console.log(dep.alias())
   }
 })

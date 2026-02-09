@@ -30,11 +30,11 @@ export const init = define({
     }
 
     try {
-      const toml = path.join(cwd, "duke.toml")
+      const toml = path.join(cwd, 'duke.toml')
       // TODO: add initial content
-      fs.writeFileSync(toml, "");
+      fs.writeFileSync(toml, '')
     } catch (_) {
-      throw new Error("Error creating config file!")
+      throw new Error('Error creating toml file!')
     }
   }
 })

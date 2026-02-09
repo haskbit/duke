@@ -10,7 +10,16 @@ export class Dependency {
   }
 
   public alias(): string {
-    return 'todo'
+    const parts = this.groupId.split('.')
+
+    if (parts.length < 2) {
+      throw new Error(
+        `Invalid groupId format: "${this.groupId}". Expected at least 2 parts`
+      )
+    }
+
+    const domain = parts.reverse().slice(-2).join('.')
+    return `${domain}/${this.artifactId}`
   }
 
   public static from(identifier: string): Dependency {

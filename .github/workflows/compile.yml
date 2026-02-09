@@ -1,0 +1,32 @@
+name: Compile binary
+
+jobs:
+  compile:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: bun-linux-x64
+            name: duke-linux-x64
+
+          - os: macos-latest
+            target: bun-darwin-arm64
+            name: duke-darwin-arm64
+
+          - os: windows-latest
+            target: bun-windows-x64
+            name: duke-windows-x64.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Compile
+        run: bun build ./src/duke.ts --compile --target=${{ matrix.target }} --outfile=${{ matrix.name }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: ${{ matrix.name }}
