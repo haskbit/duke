@@ -1,23 +1,42 @@
-import type { Dependency } from '@resolver/dependency.ts'
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+
+export enum CacheKind {
+  Global,
+  Local
+}
 
 export class Cache {
   path: string
-  kind: 'global' | 'local'
+  kind: CacheKind
 
-  constructor(path: string, kind: 'global' | 'local') {
-    this.path = path
-    this.kind = 'global'
+  constructor(kind: CacheKind) {
+    this.kind = this.resolveKind(kind)
+    this.path = this.resolvePath(this.kind)
   }
 
-  public append(dep: Dependency): Promise<void> {
-    return Promise.resolve()
+  private resolveKind(requested: CacheKind): CacheKind {
+    if (requested === CacheKind.Local) return CacheKind.Local
+    return os.homedir() ? CacheKind.Global : CacheKind.Local
   }
 
-  public remove(dep: Dependency): Promise<void> {
-    return Promise.resolve()
+  private resolvePath(kind: CacheKind): string {
+    if (kind === CacheKind.Global) return path.join(os.homedir(), '.duke')
+    return path.join(process.cwd(), 'modules')
   }
 
-  public clean(): Promise<void> {
-    return Promise.resolve()
+  public append(dep: string): void {}
+
+  public remove(dep: string): void {}
+
+  public clean(): void {
+    if (!fs.existsSync(this.path)) return
+    const files = fs.readdirSync(this.path)
+
+    for (const file of files.filter((f) => !f.endsWith('.toml'))) {
+      const filePath = path.join(this.path, file)
+      fs.rmSync(filePath, { recursive: true, force: true })
+    }
   }
 }
