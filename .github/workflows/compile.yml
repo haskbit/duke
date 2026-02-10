@@ -27,6 +27,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
 
+      - name: Install
+        run: bun install
+
       - name: Compile
         run: bun build ./src/duke.ts --compile --target=${{ matrix.target }} --outfile=${{ matrix.name }}
 
