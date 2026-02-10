@@ -1,3 +1,4 @@
+import TOML from '@iarna/toml'
 import fs from 'node:fs'
 import path from 'node:path'
 import { define } from 'gunshi'
@@ -18,21 +19,22 @@ export const init = define({
     const cwd = process.cwd()
 
     if (force) {
-      if (!fs.statSync(cwd).isDirectory()) {
-        throw new Error('Path is not a directory!')
-      }
-
-      const files = fs.readdirSync(cwd)
-      for (const file of files) {
+      for (const file of fs.readdirSync(cwd)) {
         const filePath = path.join(cwd, file)
         fs.rmSync(filePath, { recursive: true, force: true })
       }
     }
 
+    const content = {
+      project: {
+        name: path.basename(cwd),
+        version: '1.0.0'
+      }
+    }
+
     try {
       const toml = path.join(cwd, 'duke.toml')
-      // TODO: add initial content
-      fs.writeFileSync(toml, '')
+      fs.writeFileSync(toml, TOML.stringify(content), 'utf-8')
     } catch (_) {
       throw new Error('Error creating toml file!')
     }

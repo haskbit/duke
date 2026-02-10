@@ -5,6 +5,7 @@
     "paths": {
       "@command/*": ["./src/command/*"],
       "@compiler/*": ["./src/compiler/*"],
+      "@config/*": ["./src/config/*"],
       "@resolver/*": ["./src/resolver/*"]
     }
   }

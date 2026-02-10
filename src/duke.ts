@@ -1,5 +1,6 @@
 import { add } from '@command/add.ts'
 import { init } from '@command/init.ts'
+import { toml } from '@config/context'
 import { cli, define } from 'gunshi'
 import { renderUsage } from 'gunshi/renderer'
 
@@ -13,6 +14,7 @@ const duke = define({
 await cli(process.argv.slice(2), duke, {
   name: 'duke',
   version: '0.0.1',
+  plugins: [toml],
   subCommands: {
     add: add,
     init: init
