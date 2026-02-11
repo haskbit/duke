@@ -14,14 +14,26 @@ export const ConfigSchema = z.object({
   }),
   /**
    * Compile scoped dependencies
-   * @property {Map<string, string> | undefined} - The compiled dependecies
+   * @property {Record<string, string> | undefined} - The compiled dependencies
    */
-  compile: z.map(z.string(), z.string()).optional(),
+  compile: z.record(z.string(), z.string()).optional(),
   /**
    * Testing scoped dependencies
-   * @property {Map<string, string> | undefined} - The testing dependecies
+   * @property {Record<string, string> | undefined} - The testing dependencies
    */
-  test: z.map(z.string(), z.string()).optional()
+  test: z.record(z.string(), z.string()).optional(),
+  /**
+   * The current repositories for the scoped dependencies
+   * @property {Array<{ id: string, url: string }>} - The repositories
+   */
+  repositories: z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string()
+      })
+    )
+    .optional()
 })
 
 export type DukeConfig = z.infer<typeof ConfigSchema>

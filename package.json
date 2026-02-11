@@ -10,8 +10,8 @@
     "lint": "biome lint --write"
   },
   "dependencies": {
-    "@iarna/toml": "^2.2.5",
     "gunshi": "^0.27.6",
+    "smol-toml": "^1.6.0",
     "typescript": "^5.9.3",
     "zod": "^4.3.6"
   },
