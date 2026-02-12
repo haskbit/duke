@@ -1,12 +1,19 @@
+export enum Scope {
+  Compile = 'compile',
+  Test = 'test'
+}
+
 export class Dependency {
   groupId: string
   artifactId: string
   version: string
+  scope: Scope
 
   constructor(groupId: string, artifactId: string, version: string) {
     this.groupId = groupId
     this.artifactId = artifactId
     this.version = version
+    this.scope = Scope.Compile
   }
 
   public alias(): string {

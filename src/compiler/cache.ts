@@ -1,4 +1,4 @@
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 
@@ -30,13 +30,13 @@ export class Cache {
 
   public remove(dep: string): void {}
 
-  public clean(): void {
-    if (!fs.existsSync(this.path)) return
-    const files = fs.readdirSync(this.path)
+  public async clean(): Promise<void> {
+    if (!(await fs.exists(this.path))) return
+    const files = await fs.readdir(this.path)
 
     for (const file of files.filter((f) => !f.endsWith('.toml'))) {
       const filePath = path.join(this.path, file)
-      fs.rmSync(filePath, { recursive: true, force: true })
+      await fs.rm(filePath, { recursive: true, force: true })
     }
   }
 }

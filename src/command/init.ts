@@ -1,4 +1,4 @@
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import { define } from 'gunshi'
 import { stringify } from 'smol-toml'
@@ -10,7 +10,7 @@ export const init = define({
     force: {
       type: 'boolean',
       short: 'f',
-      description: 'Force a new empty project deleting existing files',
+      description: 'Force a new empty project',
       required: false
     }
   },
@@ -19,16 +19,10 @@ export const init = define({
     const cwd = process.cwd()
 
     if (force) {
-      for (const file of fs.readdirSync(cwd)) {
+      for (const file of await fs.readdir(cwd)) {
         const filePath = path.join(cwd, file)
-        fs.rmSync(filePath, { recursive: true, force: true })
+        await fs.rm(filePath, { recursive: true, force: true })
       }
-    }
-
-    if (fs.readdirSync(cwd).length > 0) {
-      throw new Error(
-        'Directory not empty! Use force flag or create a new folder'
-      )
     }
 
     const content = {
@@ -40,7 +34,7 @@ export const init = define({
 
     try {
       const toml = path.join(cwd, 'duke.toml')
-      fs.writeFileSync(toml, stringify(content), 'utf-8')
+      await fs.writeFile(toml, stringify(content), 'utf-8')
     } catch (_) {
       throw new Error('Error creating toml file!')
     }
